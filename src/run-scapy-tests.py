@@ -17,11 +17,15 @@ import argparse
 import scapy.all as scapy
 
 
-def run_scapy(target, test_type, max_packets, return_packets):
+def run_scapy(target, test_type, max_packets, return_packets, fuzz):
+    packet_type = scapy.ICMP()
+    if fuzz:
+        packet_type = scapy.fuzz(packet_type)
+    packet_gen = scapy.IP(dst=target)/packet_type
     packets = scapy.send(
-        scapy.IP(dst=target)/scapy.ICMP(),
+        packet_gen,
         return_packets=return_packets,
-        verbose=False,
+        verbose=not return_packets,
         count=max_packets)
 
     if return_packets:
@@ -47,6 +51,12 @@ def main():
     parser.add_argument(
         '--return_packets',
         help='Whether to return and show packet responses',
+        type=eval,
+        choices=[True, False],
+        default=True)
+    parser.add_argument(
+        '--fuzz',
+        help='Whether to fuzz the test type packets',
         type=eval,
         choices=[True, False],
         default=True)

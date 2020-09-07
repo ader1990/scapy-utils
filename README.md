@@ -25,9 +25,12 @@ The installation script assumes Cloudbase-Init is installed at path: `C:\Program
 ## Examples
 
 ```bash
+
 python src/run-scapy-tests.py --help
-usage: src/run-scapy-tests.py [-h] --target TARGET [--test_type {ICMP}]
-            [--max_packets MAX_PACKETS] [--return_packets RETURN_PACKETS]
+usage: run-scapy-tests.py [-h] --target TARGET [--test_type {ICMP}]
+                          [--max_packets MAX_PACKETS]
+                          [--return_packets {True,False}]
+                          [--fuzz {True,False}]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -35,8 +38,10 @@ optional arguments:
   --test_type {ICMP}    Test type to perform
   --max_packets MAX_PACKETS
                         Maximum packets to send
-  --return_packets RETURN_PACKETS
+  --return_packets {True,False}
                         Whether to return and show packet responses
+  --fuzz {True,False}   Whether to fuzz the test type packets
+
 
 
 # execute the command with administrative privileges
@@ -45,9 +50,9 @@ optional arguments:
 # Run a basic ICMP test
 python src/run-scapy-tests.py "192.168.100.81" "ICMP"
 
-# Run an ICMP test with 10 sent packets without showing returned packets
+# Run an ICMP fuzzed test with 10 sent packets without showing returned packets
 python src/run-scapy-tests.py "192.168.100.81" --test_type "ICMP" \
-    --max_packets 10 --return_packets False
+    --max_packets 10 --return_packets False --fuzz True
 
 ```
 
