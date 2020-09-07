@@ -16,7 +16,7 @@ Scapy needs to be run with administrative privileges.
 See installation script: [scripts/scapy-install.sh](scripts/scapy-install.sh).
 
 
-## ## Installation on Windows 2012 R2
+## Installation on Windows 2012 R2
 npcap need to be manually installed: https://nmap.org/npcap/dist/npcap-0.9997.exe
 
 See installation script: [scripts/scapy-install.ps1](scripts/scapy-install.ps1).
