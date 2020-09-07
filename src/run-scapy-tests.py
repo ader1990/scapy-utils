@@ -12,15 +12,49 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import sys
+import argparse
 
 import scapy.all as scapy
 
 
-def run_scapy(target_ip):
+def run_scapy(target, test_type, max_packets, return_packets):
     packets = scapy.send(
-        scapy.IP(dst=target_ip)/scapy.ICMP(),
-        return_packets=True)
-    packets.show()
+        scapy.IP(dst=target)/scapy.ICMP(),
+        return_packets=return_packets,
+        verbose=False,
+        count=max_packets)
 
-run_scapy(sys.argv[1])
+    if return_packets:
+        packets.show()
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--target',
+        help='The target of the test. Should be a valid IPv4 address',
+        required=True)
+    parser.add_argument(
+        '--test_type',
+        help='Test type to perform',
+        default="ICMP",
+        choices=["ICMP"])
+    parser.add_argument(
+        '--max_packets',
+        help='Maximum packets to send',
+        type=int,
+        default=1)
+    parser.add_argument(
+        '--return_packets',
+        help='Whether to return and show packet responses',
+        type=eval,
+        choices=[True, False],
+        default=True)
+
+    args = vars(parser.parse_args())
+
+    run_scapy(**args)
+
+
+if __name__ == "__main__":
+    main()
